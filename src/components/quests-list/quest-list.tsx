@@ -1,13 +1,18 @@
 import QuestCard from '../quest-card/quest-card';
+import { TQuest } from '../../types';
 
-function QuestList(): JSX.Element{
+type QuestsListProps = {
+  quests: TQuest[];
+}
+function QuestList({quests}: QuestsListProps): JSX.Element{
   return (
     <div className="cards-grid">
-      <QuestCard />
-      <QuestCard />
-      <QuestCard />
-      <QuestCard />
-      <QuestCard />
+      {quests.map((quest) => (
+        <QuestCard
+          key={quest.id}
+          quest={quest}
+        />
+      ))}
     </div>
   );
 }

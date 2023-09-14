@@ -1,6 +1,11 @@
 import QuestList from '../../components/quests-list/quest-list';
+import { TQuest } from '../../types';
 
-function Main(): JSX.Element{
+type MainProps = {
+  quests: TQuest[];
+}
+
+function Main({quests}: MainProps): JSX.Element{
   return (
     <div className="wrapper">
       <header className="header">
@@ -175,7 +180,7 @@ function Main(): JSX.Element{
             </form>
           </div>
           <h2 className="title visually-hidden">Выберите квест</h2>
-          <QuestList />
+          <QuestList quests={quests}/>
         </div>
       </main>
       <footer className="footer">

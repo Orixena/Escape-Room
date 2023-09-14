@@ -1,15 +1,29 @@
-function QuestCard(): JSX.Element {
+import { useState } from 'react';
+import { TQuest } from '../../types';
+
+type QuestCardProps = {
+  quest: TQuest;
+}
+
+function QuestCard({quest}: QuestCardProps): JSX.Element {
+  const {id, title, previewImg, previewImgWebp, level, type, peopleMinMax} = quest;
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="quest-card">
+    <div
+      onMouseEnter={() => setIsHovered(!isHovered)}
+      onMouseLeave={() => setIsHovered(!isHovered)}
+      className="quest-card" key={id}
+    >
       <div className="quest-card__img">
         <picture>
           <source
             type="image/webp"
-            srcSet="img/content/crypt/crypt-size-s.webp, img/content/crypt/crypt-size-s@2x.webp 2x"
+            srcSet={previewImgWebp}
           />
           <img
-            src="img/content/crypt/crypt-size-s.jpg"
-            srcSet="img/content/crypt/crypt-size-s@2x.jpg 2x"
+            src={previewImg}
+            srcSet={previewImg}
             width={344}
             height={232}
             alt="Мужчина в клетке в подземелье."
@@ -19,7 +33,7 @@ function QuestCard(): JSX.Element {
       <div className="quest-card__content">
         <div className="quest-card__info-wrapper">
           <a className="quest-card__link" href="quest.html">
-            Склеп
+            {title}
           </a>
         </div>
         <ul className="tags quest-card__tags">
@@ -27,13 +41,13 @@ function QuestCard(): JSX.Element {
             <svg width={11} height={14} aria-hidden="true">
               <use xlinkHref="#icon-person" />
             </svg>
-            2–5&nbsp;чел
+            {peopleMinMax[0]}-{peopleMinMax[1]}&nbsp;чел
           </li>
           <li className="tags__item">
             <svg width={14} height={14} aria-hidden="true">
               <use xlinkHref="#icon-level" />
             </svg>
-            Сложный
+            {level}
           </li>
         </ul>
       </div>
