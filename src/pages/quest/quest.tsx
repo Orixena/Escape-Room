@@ -1,57 +1,38 @@
-function Quest(): JSX.Element {
+import { Navigate, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import Header from '../../components/header/header';
+import { TDetailedQuest } from '../../types';
+
+type QuestProps ={
+  detailedQuests: TDetailedQuest[];
+}
+
+function Quest({detailedQuests}: QuestProps): JSX.Element {
+  const id = useParams().id;
+  const detailedQuest = detailedQuests.find((quest) => quest.id === id);
+  console.log('detailedQuest', detailedQuest);
+  if(detailedQuest === undefined){
+    return (
+      <Navigate to='/Page404'></Navigate>
+    );
+  }
+
   return (
     <div className="wrapper">
-      <header className="header">
-        <div className="container container--size-l">
-          <a
-            className="logo header__logo"
-            href="index.html"
-            aria-label="Перейти на Главную"
-          >
-            <svg width={134} height={52} aria-hidden="true">
-              <use xlinkHref="#logo" />
-            </svg>
-          </a>
-          <nav className="main-nav header__main-nav">
-            <ul className="main-nav__list">
-              <li className="main-nav__item">
-                <a className="link not-disabled active" href="index.html">
-                  Квесты
-                </a>
-              </li>
-              <li className="main-nav__item">
-                <a className="link" href="contacts.html">
-                  Контакты
-                </a>
-              </li>
-            </ul>
-          </nav>
-          <div className="header__side-nav">
-            <a
-              className="btn header__side-item header__login-btn"
-              href="login.html"
-            >
-              Вход
-            </a>
-            <a
-              className="link header__side-item header__phone-link"
-              href="tel:88003335599"
-            >
-              8 (000) 111-11-11
-            </a>
-          </div>
-        </div>
-      </header>
+      <Helmet>
+        <title>Escape-room. Quest page</title>
+      </Helmet>
+      <Header />
       <main className="decorated-page quest-page">
         <div className="decorated-page__decor" aria-hidden="true">
           <picture>
             <source
               type="image/webp"
-              srcSet="/public/img/content/maniac/maniac-size-m.webp, /public/img/content/maniac/maniac-size-m@2x.webp 2x"
+              srcSet={detailedQuest.coverImgWebp}
             />
             <img
-              src="/public/img/content/maniac/maniac-size-m.jpg"
-              srcSet="/public/img/content/maniac/maniac-size-m@2x.jpg 2x"
+              src={detailedQuest.coverImg}
+              srcSet={detailedQuest.coverImgWebp}
               width={1366}
               height={768}
               alt=""
@@ -61,34 +42,27 @@ function Quest(): JSX.Element {
         <div className="container container--size-l">
           <div className="quest-page__content">
             <h1 className="title title--size-l title--uppercase quest-page__title">
-              Маньяк
+              {detailedQuest.title}
             </h1>
             <p className="subtitle quest-page__subtitle">
-              <span className="visually-hidden">Жанр:</span>Ужасы
+              <span className="visually-hidden">Жанр:</span>{detailedQuest.type}
             </p>
             <ul className="tags tags--size-l quest-page__tags">
               <li className="tags__item">
                 <svg width={11} height={14} aria-hidden="true">
                   <use xlinkHref="#icon-person" />
                 </svg>
-                3–6&nbsp;чел
+                {detailedQuest.peopleMinMax[0]}-{detailedQuest.peopleMinMax[1]}&nbsp;чел
               </li>
               <li className="tags__item">
                 <svg width={14} height={14} aria-hidden="true">
                   <use xlinkHref="#icon-level" />
                 </svg>
-                Средний
+                {detailedQuest.level}
               </li>
             </ul>
             <p className="quest-page__description">
-              В&nbsp;комнате с&nbsp;приглушённым светом несколько человек,
-              незнакомых друг с&nbsp;другом, приходят в&nbsp;себя. Никто
-              не&nbsp;помнит, что произошло прошлым вечером. Руки и&nbsp;ноги
-              связаны, но&nbsp;одному из&nbsp;вас получилось освободиться.
-              На&nbsp;стене висит пугающий таймер и&nbsp;запущен отсчёт
-              60&nbsp;минут. Сможете&nbsp;ли вы&nbsp;разобраться в&nbsp;стрессовой
-              ситуации, помочь другим, разобраться что произошло и&nbsp;выбраться
-              из&nbsp;комнаты?
+              {detailedQuest.description}
             </p>
             <a
               className="btn btn--accent btn--cta quest-page__btn"

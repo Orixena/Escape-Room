@@ -7,3 +7,9 @@ export type TQuest ={
   type: string;
   peopleMinMax:number[];
 };
+
+export type TDetailedQuest = {
+  description: string;
+  coverImg: string;
+  coverImgWebp: string;
+} & TQuest;

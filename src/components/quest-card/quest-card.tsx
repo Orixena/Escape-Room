@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { TQuest } from '../../types';
+import { AppRoute } from '../../const';
 
 type QuestCardProps = {
   quest: TQuest;
@@ -32,9 +34,9 @@ function QuestCard({quest}: QuestCardProps): JSX.Element {
       </div>
       <div className="quest-card__content">
         <div className="quest-card__info-wrapper">
-          <a className="quest-card__link" href="quest.html">
+          <Link to={`${AppRoute.Quest}/${quest.id}`} className="quest-card__link" >
             {title}
-          </a>
+          </Link>
         </div>
         <ul className="tags quest-card__tags">
           <li className="tags__item">
