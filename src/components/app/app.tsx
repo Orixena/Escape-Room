@@ -1,4 +1,4 @@
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useEffect } from 'react';
 import Main from '../../pages/main/main';
@@ -14,6 +14,8 @@ import { TQuest, TDetailedQuest } from '../../types/types';
 import { useAppDispatch } from '../../hooks';
 import { reducer } from '../../store/reducer';
 import { setQuests } from '../../store/action';
+import HistoryRouter from '../history-router/history-router';
+import browserHistory from '../../browser-history';
 //import quests from '../../mocks/quests';
 
 type AppProps = {
@@ -31,7 +33,7 @@ function App({ detailedQuests}: AppProps): JSX.Element{
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <Routes>
           <Route path={AppRoute.Main} element={<Main />}/>
           <Route path={AppRoute.Login} element={<Login />}/>
@@ -52,7 +54,7 @@ function App({ detailedQuests}: AppProps): JSX.Element{
           <Route path='not-found' element={<Page404 />}/>
           <Route path='*' element={<Page404 />}/>
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }
