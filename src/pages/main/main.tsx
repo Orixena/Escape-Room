@@ -1,7 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import QuestList from '../../components/quests-list/quest-list';
 import Header from '../../components/header/header';
-import { TQuest } from '../../types';
+import FilterList from '../../components/filter-list/filter-list';
+import { TQuest } from '../../types/types';
 
 type MainProps = {
   quests: TQuest[];
@@ -28,92 +29,7 @@ function Main({quests}: MainProps): JSX.Element{
             <form className="filter" action="#" method="get">
               <fieldset className="filter__section">
                 <legend className="visually-hidden">Тематика</legend>
-                <ul className="filter__list">
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="all" defaultChecked />
-                    <label className="filter__label" htmlFor="all">
-                      <svg
-                        className="filter__icon"
-                        width={26}
-                        height={30}
-                        aria-hidden="true"
-                      >
-                        <use xlinkHref="#icon-all-quests" />
-                      </svg>
-                      <span className="filter__label-text">Все квесты</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="adventure" />
-                    <label className="filter__label" htmlFor="adventure">
-                      <svg
-                        className="filter__icon"
-                        width={36}
-                        height={30}
-                        aria-hidden="true"
-                      >
-                        <use xlinkHref="#icon-adventure" />
-                      </svg>
-                      <span className="filter__label-text">Приключения</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="horror" />
-                    <label className="filter__label" htmlFor="horror">
-                      <svg
-                        className="filter__icon"
-                        width={30}
-                        height={30}
-                        aria-hidden="true"
-                      >
-                        <use xlinkHref="#icon-horror" />
-                      </svg>
-                      <span className="filter__label-text">Ужасы</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="mystic" />
-                    <label className="filter__label" htmlFor="mystic">
-                      <svg
-                        className="filter__icon"
-                        width={30}
-                        height={30}
-                        aria-hidden="true"
-                      >
-                        <use xlinkHref="#icon-mystic" />
-                      </svg>
-                      <span className="filter__label-text">Мистика</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="detective" />
-                    <label className="filter__label" htmlFor="detective">
-                      <svg
-                        className="filter__icon"
-                        width={40}
-                        height={30}
-                        aria-hidden="true"
-                      >
-                        <use xlinkHref="#icon-detective" />
-                      </svg>
-                      <span className="filter__label-text">Детектив</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="sciFi" />
-                    <label className="filter__label" htmlFor="sciFi">
-                      <svg
-                        className="filter__icon"
-                        width={28}
-                        height={30}
-                        aria-hidden="true"
-                      >
-                        <use xlinkHref="#icon-sci-fi" />
-                      </svg>
-                      <span className="filter__label-text">Sci-fi</span>
-                    </label>
-                  </li>
-                </ul>
+                <FilterList />
               </fieldset>
               <fieldset className="filter__section">
                 <legend className="visually-hidden">Сложность</legend>

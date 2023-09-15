@@ -1,5 +1,5 @@
 import QuestCard from '../quest-card/quest-card';
-import { TQuest } from '../../types';
+import { TQuest } from '../../types/types';
 
 type QuestsListProps = {
   quests: TQuest[];

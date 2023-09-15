@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import App from './components/app/app';
 import quests from './mocks/quests';
 import detailedQuests from './mocks/detailed-quests';
+import { store } from './store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -10,6 +12,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App quests={quests} detailedQuests={detailedQuests}/>
+    <Provider store = {store}>
+      <App quests={quests} detailedQuests={detailedQuests}/>
+    </Provider>
   </React.StrictMode>
 );

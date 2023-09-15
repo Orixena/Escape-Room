@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TQuest } from '../../types';
+import { TQuest } from '../../types/types';
 import { AppRoute } from '../../const';
 
 type QuestCardProps = {

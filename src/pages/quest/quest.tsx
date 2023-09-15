@@ -1,17 +1,17 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { TDetailedQuest } from '../../types';
+import { TDetailedQuest } from '../../types/types';
 
 type QuestProps ={
   detailedQuests: TDetailedQuest[];
 }
 
 function Quest({detailedQuests}: QuestProps): JSX.Element {
-  const id = useParams().id;
+  const { id } = useParams();
   const detailedQuest = detailedQuests.find((quest) => quest.id === id);
   console.log('detailedQuest', detailedQuest);
-  if(detailedQuest === undefined){
+  if(!detailedQuest){
     return (
       <Navigate to='/Page404'></Navigate>
     );

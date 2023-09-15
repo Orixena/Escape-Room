@@ -1,5 +1,6 @@
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { useEffect } from 'react';
 import Main from '../../pages/main/main';
 import Booking from '../../pages/booking/booking';
 import Contacts from '../../pages/contacts/contacts';
@@ -9,14 +10,25 @@ import Quest from '../../pages/quest/quest';
 import Page404 from '../../pages/page404/page404';
 import PrivateRoute from '../private-route/private-route';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { TQuest, TDetailedQuest } from '../../types';
+import { TQuest, TDetailedQuest } from '../../types/types';
+import { useAppDispatch } from '../../hooks';
+import { reducer } from '../../store/reducer';
+import { setQuests } from '../../store/action';
+import quests from '../../mocks/quests';
 
 type AppProps = {
-  quests: TQuest[];
+  //quests: TQuest[];
   detailedQuests: TDetailedQuest[];
 }
 
-function App({quests, detailedQuests}: AppProps): JSX.Element{
+function App({ detailedQuests}: AppProps): JSX.Element{
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setQuests(quests));
+  },[dispatch]);
+
   return (
     <HelmetProvider>
       <BrowserRouter>
