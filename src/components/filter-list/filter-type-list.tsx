@@ -1,6 +1,6 @@
 import { questTypes } from '../../const';
 
-function FilterList(): JSX.Element {
+function FilterTypeList(): JSX.Element {
   return (
     <ul className="filter__list">
       {Object.entries(questTypes).map(([key,value]) => (
@@ -23,4 +23,4 @@ function FilterList(): JSX.Element {
   );
 }
 
-export default FilterList;
+export default FilterTypeList;

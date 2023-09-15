@@ -21,3 +21,26 @@ export const questTypes = {
   'detective': 'Детектив',
   'sci-fi': 'Sci-fi',
 };
+
+export const questDifficulty = {
+  'any': 'любой',
+  'easy': 'простой',
+  'middle': 'средний',
+  'hard': 'сложный'
+};
+
+export enum ApiRoute {
+  GetQuests = '/quest',
+  GetDetailedQuest = '/quest',
+  Login = '/login',
+  Logout = '/logout',
+  Booking = '/quest/{questId}/booking',
+  MyQuests = '/reservation',
+}
+
+export const enum FetchingNameSpace {
+  Quests = 'QUESTS',
+  Quest = 'QUEST',
+  Reservation = 'RESERVATION',
+  User = 'USER'
+}

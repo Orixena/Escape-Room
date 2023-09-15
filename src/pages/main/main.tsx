@@ -1,14 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import QuestList from '../../components/quests-list/quest-list';
 import Header from '../../components/header/header';
-import FilterList from '../../components/filter-list/filter-list';
+import FilterTypeList from '../../components/filter-list/filter-type-list';
+import FilterDifficultyList from '../../components/filter-list/filter-difficulty-list';
 import { TQuest } from '../../types/types';
+import { useAppSelector } from '../../hooks';
 
-type MainProps = {
-  quests: TQuest[];
-}
+function Main(): JSX.Element{
 
-function Main({quests}: MainProps): JSX.Element{
+  const quests = useAppSelector((state) => state.quests);
   return (
     <div className="wrapper">
       <Helmet>
@@ -29,36 +29,11 @@ function Main({quests}: MainProps): JSX.Element{
             <form className="filter" action="#" method="get">
               <fieldset className="filter__section">
                 <legend className="visually-hidden">Тематика</legend>
-                <FilterList />
+                <FilterTypeList />
               </fieldset>
               <fieldset className="filter__section">
                 <legend className="visually-hidden">Сложность</legend>
-                <ul className="filter__list">
-                  <li className="filter__item">
-                    <input type="radio" name="level" id="any" defaultChecked />
-                    <label className="filter__label" htmlFor="any">
-                      <span className="filter__label-text">Любой</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="level" id="easy" />
-                    <label className="filter__label" htmlFor="easy">
-                      <span className="filter__label-text">Лёгкий</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="level" id="middle" />
-                    <label className="filter__label" htmlFor="middle">
-                      <span className="filter__label-text">Средний</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="level" id="hard" />
-                    <label className="filter__label" htmlFor="hard">
-                      <span className="filter__label-text">Сложный</span>
-                    </label>
-                  </li>
-                </ul>
+                <FilterDifficultyList />
               </fieldset>
             </form>
           </div>

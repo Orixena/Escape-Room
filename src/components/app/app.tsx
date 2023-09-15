@@ -14,7 +14,7 @@ import { TQuest, TDetailedQuest } from '../../types/types';
 import { useAppDispatch } from '../../hooks';
 import { reducer } from '../../store/reducer';
 import { setQuests } from '../../store/action';
-import quests from '../../mocks/quests';
+//import quests from '../../mocks/quests';
 
 type AppProps = {
   //quests: TQuest[];
@@ -23,17 +23,17 @@ type AppProps = {
 
 function App({ detailedQuests}: AppProps): JSX.Element{
 
-  const dispatch = useAppDispatch();
+  //const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(setQuests(quests));
-  },[dispatch]);
+  // useEffect(() => {
+  //   dispatch(setQuests(quests));
+  // },[dispatch]);
 
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path={AppRoute.Main} element={<Main quests={quests}/>}/>
+          <Route path={AppRoute.Main} element={<Main />}/>
           <Route path={AppRoute.Login} element={<Login />}/>
           <Route path={AppRoute.Contacts} element={<Contacts />}/>
           <Route path={AppRoute.Quest}>

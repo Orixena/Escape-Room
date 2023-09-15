@@ -13,3 +13,13 @@ export type TDetailedQuest = {
   coverImg: string;
   coverImgWebp: string;
 } & TQuest;
+
+export type UserData = {
+  email: string;
+  token: string;
+}
+
+export type AuthData = {
+  email: string;
+  password: string;
+}

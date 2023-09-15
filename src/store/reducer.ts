@@ -1,20 +1,25 @@
-import { createReducer, current } from '@reduxjs/toolkit';
-import { setQuests} from './action';
+import { createReducer } from '@reduxjs/toolkit';
+import { setQuests, loadQuests, requireAuthorization } from './action';
 import { TQuest } from '../types/types';
+import { AuthorizationStatus } from '../const';
 
 type InitialState = {
   quests: TQuest[];
+  authorizationStatus: AuthorizationStatus;
 }
 
 const initialState: InitialState = {
   quests: [],
+  authorizationStatus: AuthorizationStatus.Unknown,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(setQuests,(state,action) => {
+    .addCase(loadQuests,(state,action) => {
       state.quests = action.payload;
-      console.log('setQuests', current(state));
+    })
+    .addCase(requireAuthorization,(state,action) => {
+      state.authorizationStatus = action.payload;
     });
 });
 
