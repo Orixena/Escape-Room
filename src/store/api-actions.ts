@@ -8,7 +8,6 @@ import {ApiRoute, AppRoute, FetchingNameSpace } from '../const';
 import { dropToken,saveToken } from '../services/token.js';
 import { AuthorizedUser } from '../types/types.js';
 //import { clearFavorites } from './favorites-data/favorites-data.slice.js';
-import { loadQuests } from './action.js';
 
 
 export const fetchQuestsAction = createAsyncThunk<TQuest[], undefined,{
@@ -17,9 +16,8 @@ export const fetchQuestsAction = createAsyncThunk<TQuest[], undefined,{
   extra: AxiosInstance;
 }>(
   `${FetchingNameSpace.Quests}/fetchQuests`,
-  async (_arg, { dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     const { data } = await api.get<TQuest[]>(ApiRoute.GetQuests);
-    dispatch(loadQuests(data));
     return data;
   }
 );

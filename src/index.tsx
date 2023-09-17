@@ -2,13 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './components/app/app';
-//import quests from './mocks/quests';
-import detailedQuests from './mocks/detailed-quests';
 import { store } from './store';
 import { checkAuthAction, fetchQuestsAction } from './store/api-actions';
 
-store.dispatch(checkAuthAction());
 store.dispatch(fetchQuestsAction());
+store.dispatch(checkAuthAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,7 +15,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store = {store}>
-      <App detailedQuests={detailedQuests}/>
+      <App />
     </Provider>
   </React.StrictMode>
 );
