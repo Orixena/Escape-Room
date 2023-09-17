@@ -44,3 +44,10 @@ export const enum FetchingNameSpace {
   Reservation = 'RESERVATION',
   User = 'USER'
 }
+
+export const enum RequestStatus {
+  Unsent = 'UNSENT',
+  Pending = 'PENDING',
+  Success = 'SUCCESS',
+  Error = 'ERROR'
+}

@@ -1,7 +1,13 @@
 import { Navigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { TDetailedQuest } from '../../types/types';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getFetchingStatusQuest, getQuest } from '../../store/quest-data/quest-data.selectors';
+import { getQuests } from '../../store/quests-data/quests-data.selectors';
+import { getAuthorizationStatus } from '../../store/user-data/user-data.selectors';
+import { fetchQuestAction } from '../../store/api-actions';
 
 type QuestProps ={
   detailedQuests: TDetailedQuest[];
@@ -9,8 +15,21 @@ type QuestProps ={
 
 function Quest({detailedQuests}: QuestProps): JSX.Element {
   const { id } = useParams();
-  const detailedQuest = detailedQuests.find((quest) => quest.id === id);
+  const dispatch = useAppDispatch();
+  const isDetailedQuestDataLoading = useAppSelector(getFetchingStatusQuest);
+  const detailedQuest = useAppSelector(getQuest);
+  const quests = useAppSelector(getQuests);
+  const currentQuest = quests.find((item) => item.id === id);
+  const isAuthorizationStatus = useAppSelector(getAuthorizationStatus);
+
   console.log('detailedQuest', detailedQuest);
+
+  useEffect(() => {
+    if(id) {
+      dispatch(fetchQuestAction(id));
+    }
+  }, [id, dispatch]);
+
   if(!detailedQuest){
     return (
       <Navigate to='/Page404'></Navigate>

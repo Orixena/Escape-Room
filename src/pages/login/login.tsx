@@ -1,7 +1,55 @@
 import { Helmet } from 'react-helmet-async';
+import { Navigate } from 'react-router-dom';
+import {useRef, FormEvent, useState } from 'react';
+import { loginAction } from '../../store/api-actions';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import { getAuthorizationStatus } from '../../store/user-data/user-data.selectors';
+import { AuthorizationStatus } from '../../const';
 import Header from '../../components/header/header';
 
+const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z-A-Z]).{2,}$/;
+const PASSWORD_INVALID_MESSAGE = 'Password must contain 2 chars or more than and at least one letter and one digit';
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const EMAIL_INVALID_MESSAGE = 'Please, enter correct email address';
+
 function Login(): JSX.Element{
+
+  const loginRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
+  const dispatch = useAppDispatch();
+
+  const clickSubmitButtonHandler = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if(loginRef.current) {
+      if (!EMAIL_REGEX.test(loginRef.current.value)) {
+        setErrorMessage(EMAIL_INVALID_MESSAGE);
+        return;
+      }
+    }
+
+    if(passwordRef.current) {
+      if (!PASSWORD_REGEX.test(passwordRef.current.value)) {
+        setErrorMessage(PASSWORD_INVALID_MESSAGE);
+        return;
+      }
+    }
+    if (loginRef.current && passwordRef.current) {
+
+      dispatch(loginAction({
+        email: loginRef.current.value,
+        password: passwordRef.current.value
+      }));
+    }
+  };
+
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    return <Navigate to='/' />;
+  }
+
   return (
     <div className="wrapper">
       <Helmet>
@@ -30,6 +78,7 @@ function Login(): JSX.Element{
               className="login-form"
               action="https://echo.htmlacademy.ru/"
               method="post"
+              onSubmit={clickSubmitButtonHandler}
             >
               <div className="login-form__inner-wrapper">
                 <h1 className="title title--size-s login-form__title">Вход</h1>
@@ -39,6 +88,7 @@ function Login(): JSX.Element{
                       E&nbsp;–&nbsp;mail
                     </label>
                     <input
+                      ref={loginRef}
                       type="email"
                       id="email"
                       name="email"
@@ -51,6 +101,7 @@ function Login(): JSX.Element{
                       Пароль
                     </label>
                     <input
+                      ref={passwordRef}
                       type="password"
                       id="password"
                       name="password"
@@ -59,6 +110,7 @@ function Login(): JSX.Element{
                     />
                   </div>
                 </div>
+                {errorMessage && <div className="login__input-wrapper form__input-wrapper">{errorMessage}</div>}
                 <button
                   className="btn btn--accent btn--general login-form__submit"
                   type="submit"

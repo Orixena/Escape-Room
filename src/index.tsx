@@ -5,8 +5,9 @@ import App from './components/app/app';
 //import quests from './mocks/quests';
 import detailedQuests from './mocks/detailed-quests';
 import { store } from './store';
-import { fetchQuestsAction } from './store/api-actions';
+import { checkAuthAction, fetchQuestsAction } from './store/api-actions';
 
+store.dispatch(checkAuthAction());
 store.dispatch(fetchQuestsAction());
 
 const root = ReactDOM.createRoot(

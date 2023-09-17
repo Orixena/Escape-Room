@@ -3,12 +3,12 @@ import QuestList from '../../components/quests-list/quest-list';
 import Header from '../../components/header/header';
 import FilterTypeList from '../../components/filter-list/filter-type-list';
 import FilterDifficultyList from '../../components/filter-list/filter-difficulty-list';
-import { TQuest } from '../../types/types';
 import { useAppSelector } from '../../hooks';
+import { getQuests } from '../../store/quests-data/quests-data.selectors';
 
 function Main(): JSX.Element{
 
-  const quests = useAppSelector((state) => state.quests);
+  const quests = useAppSelector(getQuests);
   return (
     <div className="wrapper">
       <Helmet>

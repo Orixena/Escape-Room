@@ -11,25 +11,21 @@ import Page404 from '../../pages/page404/page404';
 import PrivateRoute from '../private-route/private-route';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { TQuest, TDetailedQuest } from '../../types/types';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { reducer } from '../../store/reducer';
 import { setQuests } from '../../store/action';
 import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
-//import quests from '../../mocks/quests';
+import { getAuthorizationStatus } from '../../store/user-data/user-data.selectors';
+
 
 type AppProps = {
-  //quests: TQuest[];
   detailedQuests: TDetailedQuest[];
 }
 
 function App({ detailedQuests}: AppProps): JSX.Element{
 
-  //const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   dispatch(setQuests(quests));
-  // },[dispatch]);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <HelmetProvider>
@@ -45,7 +41,7 @@ function App({ detailedQuests}: AppProps): JSX.Element{
           <Route path={AppRoute.MyQuests}
             element={
               <PrivateRoute
-                authorizationStatus={AuthorizationStatus.Auth}
+                authorizationStatus={authorizationStatus}
               >
                 <MyQuests />
               </PrivateRoute>

@@ -1,6 +1,16 @@
 import Logo from '../logo/logo';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getUser, getAuthorizationStatus } from '../../store/user-data/user-data.selectors';
+import { logoutAction } from '../../store/api-actions';
+import { Link } from 'react-router-dom';
+import { AppRoute, AuthorizationStatus } from '../../const';
 
 function Header(): JSX.Element {
+
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(getUser);
+  const isAuthorizationStatus = useAppSelector(getAuthorizationStatus);
+
   return (
     <header className="header">
       <div className="container container--size-l">
@@ -8,32 +18,45 @@ function Header(): JSX.Element {
         <nav className="main-nav header__main-nav">
           <ul className="main-nav__list">
             <li className="main-nav__item">
-              <a className="link active" href="index.html">
+              <Link className="link active" to={AppRoute.Main}>
                 Квесты
-              </a>
+              </Link>
             </li>
             <li className="main-nav__item">
-              <a className="link" href="contacts.html">
+              <Link className="link" to={AppRoute.Contacts}>
                 Контакты
-              </a>
+              </Link>
             </li>
+            {isAuthorizationStatus === AuthorizationStatus.Auth &&
             <li className="main-nav__item">
-              <a className="link" href="my-quests.html">
+              <Link className="link" to={AppRoute.MyQuests}>
                 Мои бронирования
-              </a>
-            </li>
+              </Link>
+            </li>}
           </ul>
         </nav>
         <div className="header__side-nav">
-          <a className="btn btn--accent header__side-item" href="#">
-            Выйти
-          </a>
-          <a
+          {isAuthorizationStatus === AuthorizationStatus.Auth
+            ?
+            <Link className="btn btn--accent header__side-item" to="#"
+              onClick={(evt) => {
+                evt.preventDefault();
+                dispatch(logoutAction());
+              }}
+            >
+              Выйти
+            </Link>
+            :
+            <Link className="btn header__side-item header__login-btn" to={AppRoute.Login}>
+              Вход
+            </Link>}
+
+          <Link
             className="link header__side-item header__phone-link"
-            href="tel:88003335599"
+            to="tel:88003335599"
           >
             8 (000) 111-11-11
-          </a>
+          </Link>
         </div>
       </div>
     </header>

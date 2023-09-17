@@ -1,3 +1,5 @@
+import { AuthorizationStatus, RequestStatus } from '../const';
+
 export type TQuest ={
   id: string;
   title: string;
@@ -14,12 +16,28 @@ export type TDetailedQuest = {
   coverImgWebp: string;
 } & TQuest;
 
-export type UserData = {
+export type AuthorizedUser = {
   email: string;
   token: string;
+}
+
+export type UserData = {
+  user: AuthorizedUser | null;
+  authorizationStatus: AuthorizationStatus;
+  sendingStatusLogin: RequestStatus;
 }
 
 export type AuthData = {
   email: string;
   password: string;
+}
+
+export type QuestsData = {
+  quests: TQuest[];
+  fetchingStatusQuests: RequestStatus;
+}
+
+export type QuestData = {
+  quest: TDetailedQuest | null;
+  fetchingStatusQuest: RequestStatus;
 }
