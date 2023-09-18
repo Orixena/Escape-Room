@@ -1,11 +1,27 @@
-import { questTypes } from '../../const';
+import { questTypesNames, QuestTypes } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { changeQuestType } from '../../store/quests-data/quests-data-slice';
 
-function FilterTypeList(): JSX.Element {
+type FilterTypeListProps ={
+  questActiveType: string;
+}
+
+function FilterTypeList({questActiveType}: FilterTypeListProps): JSX.Element {
+
+  const dispatch = useAppDispatch();
+  console.log('questType: ',questActiveType);
+
+
   return (
     <ul className="filter__list">
-      {Object.entries(questTypes).map(([key,value]) => (
+      {Object.entries(questTypesNames).map(([key,value]) => (
         <li className="filter__item" key={key}>
-          <input type="radio" name="type" id={key} defaultChecked />
+          <input type="radio" name="type" id={key}
+            onChange={(evt) => {
+              evt.preventDefault();
+              dispatch(changeQuestType(key));
+            }}
+          />
           <label className="filter__label" htmlFor={key}>
             <svg
               className="filter__icon"

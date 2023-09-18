@@ -1,17 +1,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchQuestsAction } from '../api-actions';
-import { FetchingNameSpace, RequestStatus } from '../../const';
+import { FetchingNameSpace, RequestStatus, QuestTypes, QuestDifficulty } from '../../const';
 import { QuestsData } from '../../types/types';
 
 const initialState: QuestsData = {
   quests: [],
   fetchingStatusQuests: RequestStatus.Unsent,
+  questTypes: QuestTypes.all,
+  questDifficulty: QuestDifficulty.any,
 };
 
 export const questsData = createSlice({
   name: FetchingNameSpace.Quests,
   initialState,
-  reducers:{},
+  reducers:{
+    changeQuestType: (state, action: PayloadAction<string>) => {
+      state.questTypes = action.payload;
+    },
+    changeQuestDifficulty: (state, action: PayloadAction<string>) => {
+      state.questDifficulty = action.payload;
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchQuestsAction.pending, (state) => {
@@ -41,3 +50,5 @@ export const questsData = createSlice({
       // });
   },
 });
+
+export const { changeQuestDifficulty, changeQuestType} = questsData.actions;

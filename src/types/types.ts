@@ -35,6 +35,8 @@ export type AuthData = {
 export type QuestsData = {
   quests: TQuest[];
   fetchingStatusQuests: RequestStatus;
+  questTypes: string;
+  questDifficulty: string;
 }
 
 export type QuestData = {

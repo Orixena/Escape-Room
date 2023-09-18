@@ -8,15 +8,24 @@ import MyQuests from '../../pages/my-quests/my-quests';
 import Quest from '../../pages/quest/quest';
 import Page404 from '../../pages/page404/page404';
 import PrivateRoute from '../private-route/private-route';
-import { AppRoute } from '../../const';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import { AppRoute, RequestStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
 import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
 import { getAuthorizationStatus } from '../../store/user-data/user-data.selectors';
+import { getFetchingStatusQuests } from '../../store/quests-data/quests-data.selectors';
 
 function App(): JSX.Element{
 
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isOffersDataLoading = useAppSelector(getFetchingStatusQuests);
+
+  if(isOffersDataLoading === RequestStatus.Pending) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <HelmetProvider>

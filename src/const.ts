@@ -13,8 +13,8 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const questTypes = {
-  'all-quests': 'Все квесты',
+export const questTypesNames = {
+  'all': 'Все квесты',
   'adventure': 'Приключения',
   'horror': 'Ужасы',
   'mystic': 'Мистика',
@@ -22,12 +22,28 @@ export const questTypes = {
   'sci-fi': 'Sci-fi',
 };
 
-export const questDifficulty = {
+export const enum QuestTypes {
+  all = 'all',
+  adventure = 'adventure',
+  horror = 'horror',
+  mystic = 'mystic',
+  detective = 'detective',
+  sciFi = 'sci-fi',
+}
+
+export const questDifficultyNames = {
   'any': 'любой',
   'easy': 'простой',
-  'middle': 'средний',
+  'medium': 'средний',
   'hard': 'сложный'
 };
+
+export const enum QuestDifficulty {
+  any = 'any',
+  easy = 'easy',
+  medium = 'medium',
+  hard = 'hard',
+}
 
 export enum ApiRoute {
   GetQuests = '/quest',

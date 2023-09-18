@@ -2,6 +2,7 @@ import { Navigate, useParams, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
+import LoadingScreen from '../loading-screen/loading-screen';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getFetchingStatusQuest, getQuest } from '../../store/quest-data/quest-data.selectors';
 import { fetchQuestAction } from '../../store/api-actions';
@@ -22,7 +23,7 @@ function Quest(): JSX.Element {
 
   if(isFetchingStatus === RequestStatus.Pending || isFetchingStatus === RequestStatus.Unsent){
     return (
-      <div>loading</div>
+      <LoadingScreen />
     );
   }
 

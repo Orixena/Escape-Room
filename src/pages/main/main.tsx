@@ -4,11 +4,19 @@ import Header from '../../components/header/header';
 import FilterTypeList from '../../components/filter-list/filter-type-list';
 import FilterDifficultyList from '../../components/filter-list/filter-difficulty-list';
 import { useAppSelector } from '../../hooks';
-import { getQuests } from '../../store/quests-data/quests-data.selectors';
+import { getQuests, getQuestDifficulty, getQuestType } from '../../store/quests-data/quests-data.selectors';
+import { sortingDifficulty, sortingType } from '../../utils';
 
 function Main(): JSX.Element{
 
   const quests = useAppSelector(getQuests);
+  const questActiveType = useAppSelector(getQuestType);
+  const questActiveDifficulty = useAppSelector(getQuestDifficulty);
+
+  const sortedQuestsByType = sortingType[questActiveType](quests);
+  const sortedQuests = sortingDifficulty[questActiveDifficulty](sortedQuestsByType);
+
+
   return (
     <div className="wrapper">
       <Helmet>
@@ -29,7 +37,7 @@ function Main(): JSX.Element{
             <form className="filter" action="#" method="get">
               <fieldset className="filter__section">
                 <legend className="visually-hidden">Тематика</legend>
-                <FilterTypeList />
+                <FilterTypeList questActiveType={questActiveType}/>
               </fieldset>
               <fieldset className="filter__section">
                 <legend className="visually-hidden">Сложность</legend>
@@ -38,7 +46,7 @@ function Main(): JSX.Element{
             </form>
           </div>
           <h2 className="title visually-hidden">Выберите квест</h2>
-          <QuestList quests={quests}/>
+          <QuestList quests={sortedQuests}/>
         </div>
       </main>
       <footer className="footer">

@@ -12,3 +12,13 @@ export const getFetchingStatusQuests = createSelector(
   (state: State) => state[FetchingNameSpace.Quests],
   (state: QuestsData) => state.fetchingStatusQuests
 );
+
+export const getQuestType = createSelector(
+  (state: State) => state[FetchingNameSpace.Quests],
+  (state: QuestsData) => state.questTypes
+);
+
+export const getQuestDifficulty = createSelector(
+  (state: State) => state[FetchingNameSpace.Quests],
+  (state: QuestsData) => state.questDifficulty
+);
