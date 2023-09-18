@@ -5,7 +5,7 @@ import { TQuest, TDetailedQuest } from '../types/types.js';
 import { AuthData } from '../types/types.js';
 import { redirectToRoute } from './action';
 import { ApiRoute, AppRoute, FetchingNameSpace } from '../const';
-import { dropToken, saveToken, getToken } from '../services/token.js';
+import { dropToken, saveToken } from '../services/token.js';
 import { AuthorizedUser } from '../types/types.js';
 
 //import { clearFavorites } from './favorites-data/favorites-data.slice.js';
@@ -47,11 +47,7 @@ export const checkAuthAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >(`${FetchingNameSpace.User}/checkAuth`, async (_arg, { extra: api }) => {
-  const { data } = await api.get<AuthorizedUser>(ApiRoute.Login, {
-    headers: {
-      'X-Token': getToken(),
-    },
-  });
+  const { data } = await api.get<AuthorizedUser>(ApiRoute.Login);
 
   return data;
 });
@@ -89,11 +85,7 @@ export const logoutAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >(`${FetchingNameSpace.User}/logout`, async (_arg, { extra: api }) => {
-  await api.delete(ApiRoute.Logout, {
-    headers: {
-      'X-Token': getToken(),
-    },
-  });
+  await api.delete(ApiRoute.Logout);
 
   dropToken();
   //dispatch(clearFavorites());

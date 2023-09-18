@@ -1,4 +1,4 @@
-import { questTypesNames, QuestTypes } from '../../const';
+import { questTypesNames } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { changeQuestType } from '../../store/quests-data/quests-data-slice';
 

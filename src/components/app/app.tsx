@@ -37,7 +37,15 @@ function App(): JSX.Element{
           <Route path={AppRoute.Quest}>
             <Route path=':id' element={<Quest />}/>
           </Route>
-          <Route path={`${AppRoute.Quest}/:id/booking`} element={<Booking />} />
+          <Route path={`${AppRoute.Quest}/:id/booking`}
+            element={
+              <PrivateRoute
+                authorizationStatus={authorizationStatus}
+              >
+                <Booking />
+              </PrivateRoute>
+            }
+          />
           <Route path={AppRoute.MyQuests}
             element={
               <PrivateRoute
