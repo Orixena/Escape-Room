@@ -1,14 +1,16 @@
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getQuest } from '../../store/quest-data/quest-data.selectors';
+import { getFetchingStatusQuest, getQuest } from '../../store/quest-data/quest-data.selectors';
 import { fetchQuestAction } from '../../store/api-actions';
+import { AppRoute, RequestStatus } from '../../const';
 
 function Quest(): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const isFetchingStatus = useAppSelector(getFetchingStatusQuest);
 
   useEffect(() => {
     if(id) {
@@ -17,9 +19,14 @@ function Quest(): JSX.Element {
   }, [id, dispatch]);
 
   const detailedQuest = useAppSelector(getQuest);
-  console.log('detailedQuest', detailedQuest);
 
-  if(!detailedQuest){
+  if(isFetchingStatus === RequestStatus.Pending || isFetchingStatus === RequestStatus.Unsent){
+    return (
+      <div>loading</div>
+    );
+  }
+
+  if(!detailedQuest && isFetchingStatus === RequestStatus.Success){
     return <Navigate to='/not-found'/>;
   }
 
@@ -34,11 +41,11 @@ function Quest(): JSX.Element {
           <picture>
             <source
               type="image/webp"
-              srcSet={detailedQuest.coverImgWebp}
+              srcSet={detailedQuest?.coverImgWebp}
             />
             <img
-              src={detailedQuest.coverImg}
-              srcSet={detailedQuest.coverImgWebp}
+              src={detailedQuest?.coverImg}
+              srcSet={detailedQuest?.coverImgWebp}
               width={1366}
               height={768}
               alt=""
@@ -48,34 +55,34 @@ function Quest(): JSX.Element {
         <div className="container container--size-l">
           <div className="quest-page__content">
             <h1 className="title title--size-l title--uppercase quest-page__title">
-              {detailedQuest.title}
+              {detailedQuest?.title}
             </h1>
             <p className="subtitle quest-page__subtitle">
-              <span className="visually-hidden">Жанр:</span>{detailedQuest.type}
+              <span className="visually-hidden">Жанр:</span>{detailedQuest?.type}
             </p>
             <ul className="tags tags--size-l quest-page__tags">
               <li className="tags__item">
                 <svg width={11} height={14} aria-hidden="true">
                   <use xlinkHref="#icon-person" />
                 </svg>
-                {detailedQuest.peopleMinMax[0]}-{detailedQuest.peopleMinMax[1]}&nbsp;чел
+                {detailedQuest?.peopleMinMax[0]}-{detailedQuest?.peopleMinMax[1]}&nbsp;чел
               </li>
               <li className="tags__item">
                 <svg width={14} height={14} aria-hidden="true">
                   <use xlinkHref="#icon-level" />
                 </svg>
-                {detailedQuest.level}
+                {detailedQuest?.level}
               </li>
             </ul>
             <p className="quest-page__description">
-              {detailedQuest.description}
+              {detailedQuest?.description}
             </p>
-            <a
+            <Link
               className="btn btn--accent btn--cta quest-page__btn"
-              href="booking.html"
+              to={`${AppRoute.Quest}/${id || ''}/booking`}
             >
               Забронировать
-            </a>
+            </Link>
           </div>
         </div>
       </main>

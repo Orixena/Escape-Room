@@ -23,6 +23,7 @@ export const questData = createSlice({
       })
       .addCase(fetchQuestAction.rejected, (state) => {
         state.fetchingStatusQuest = RequestStatus.Error;
+        state.quest = null;
       });
   }
 });

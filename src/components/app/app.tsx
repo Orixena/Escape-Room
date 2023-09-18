@@ -27,8 +27,8 @@ function App(): JSX.Element{
           <Route path={AppRoute.Contacts} element={<Contacts />}/>
           <Route path={AppRoute.Quest}>
             <Route path=':id' element={<Quest />}/>
-            <Route path=':id/booking' element={<Booking />} />
           </Route>
+          <Route path={`${AppRoute.Quest}/:id/booking`} element={<Booking />} />
           <Route path={AppRoute.MyQuests}
             element={
               <PrivateRoute
