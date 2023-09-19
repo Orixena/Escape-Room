@@ -1,12 +1,10 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.js';
-import { TQuest, TDetailedQuest } from '../types/types.js';
-import { AuthData } from '../types/types.js';
+import { TQuest, TDetailedQuest, AuthData, AuthorizedUser, BookingQuest } from '../types/types.js';
 import { redirectToRoute } from './action';
 import { ApiRoute, AppRoute, FetchingNameSpace } from '../const';
 import { dropToken, saveToken } from '../services/token.js';
-import { AuthorizedUser } from '../types/types.js';
 
 //import { clearFavorites } from './favorites-data/favorites-data.slice.js';
 
@@ -24,17 +22,33 @@ export const fetchQuestsAction = createAsyncThunk<
 });
 
 export const fetchQuestAction = createAsyncThunk<
-  TDetailedQuest,
+TDetailedQuest,
   TQuest['id'],
   {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->(`${FetchingNameSpace.Quest}/fetchQuest`, async (id, { extra: api }) => {
+>(`${FetchingNameSpace.Quest}/fetchBooking`, async (id, { extra: api }) => {
   const { data } = await api.get<TDetailedQuest>(
     `${ApiRoute.GetDetailedQuest}/${id}`
   );
+  return data;
+});
+
+export const fetchBookingAction = createAsyncThunk<
+  BookingQuest[],
+  TQuest['id'],
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(`${FetchingNameSpace.Quest}/booking`, async (id, { extra: api }) => {
+  const { data } = await api.get<BookingQuest[]>(
+    `${ApiRoute.GetDetailedQuest}/${id}/booking`
+  );
+  console.log(data);
   return data;
 });
 

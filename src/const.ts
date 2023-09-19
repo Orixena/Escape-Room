@@ -50,7 +50,7 @@ export enum ApiRoute {
   GetDetailedQuest = '/quest',
   Login = '/login',
   Logout = '/logout',
-  Booking = '/quest/{questId}/booking',
+  Booking = '/quest',
   MyQuests = '/reservation',
 }
 
@@ -67,3 +67,7 @@ export const enum RequestStatus {
   Success = 'SUCCESS',
   Error = 'ERROR'
 }
+
+export const URL_MARKER_DEFAULT = '/public/img/svg/pin-default.svg';
+export const URL_MARKER_CURRENT = '/public/img/svg/pin-active.svg';
+export const ZOOM = 10;

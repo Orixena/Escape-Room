@@ -12,3 +12,23 @@ export const getFetchingStatusQuest = createSelector(
   (state: State) => state[FetchingNameSpace.Quest],
   (state: QuestData) => state.fetchingStatusQuest
 );
+
+export const getBookingQuestInfo = createSelector(
+  (state: State) => state[FetchingNameSpace.Quest],
+  (state: QuestData) => state.bookingInfo
+);
+
+export const getBookingQuestInfoLoadingStatus = createSelector(
+  (state: State) => state[FetchingNameSpace.Quest],
+  (state: QuestData) => state.isBookingInfoLoaded
+);
+
+export const getSelectedQuestPlaceId = createSelector(
+  (state: State) => state[FetchingNameSpace.Quest],
+  (state: QuestData) => state.selectedQuestPlaceId
+);
+
+export const getSelectedQuestPlace = createSelector(
+  (state: State) => state[FetchingNameSpace.Quest],
+  (state: QuestData) => state.selectedQuestPlace
+);

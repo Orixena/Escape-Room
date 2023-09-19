@@ -1,7 +1,33 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
+import TodayQuestTime from '../../components/quest-time/today-quest-time';
+import TomorrowQuestTime from '../../components/quest-time/tomorrow-quest-time';
+import Map from '../../components/map/map';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchBookingAction } from '../../store/api-actions';
+import { getQuest, getBookingQuestInfo } from '../../store/quest-data/quest-data.selectors';
+
 
 function Booking(): JSX.Element{
+
+  const { id } = useParams();
+
+  const dispatch = useAppDispatch();
+  const detailedQuest = useAppSelector(getQuest);
+
+  useEffect(() => {
+    if (detailedQuest.id) {
+      dispatch(fetchBookingAction(detailedQuest.id));
+    } else if (id) {
+      dispatch(fetchBookingAction(id));
+    }
+  }, [id, dispatch, detailedQuest.id]);
+
+  const bookingQuestInfo = useAppSelector(getBookingQuestInfo);
+  console.log(bookingQuestInfo, 'booking');
+
   return (
     <div className="wrapper">
       <Helmet>
@@ -13,11 +39,11 @@ function Booking(): JSX.Element{
           <picture>
             <source
               type="image/webp"
-              srcSet="/public/img/content/maniac/maniac-bg-size-m.webp, /public/img/content/maniac/maniac-bg-size-m@2x.webp 2x"
+              srcSet={detailedQuest.coverImgWebp}
             />
             <img
-              src="/public/img/content/maniac/maniac-bg-size-m.jpg"
-              srcSet="/public/img/content/maniac/maniac-bg-size-m@2x.jpg 2x"
+              src={detailedQuest.coverImg}
+              srcSet={detailedQuest.coverImgWebp}
               width={1366}
               height={1959}
               alt=""
@@ -30,17 +56,18 @@ function Booking(): JSX.Element{
               Бронирование квеста
             </h1>
             <p className="title title--size-m title--uppercase page-content__title">
-              Маньяк
+              {detailedQuest.title}
             </p>
           </div>
           <div className="page-content__item">
             <div className="booking-map">
               <div className="map">
-                <div className="map__container" />
+                <div className="map__container">
+
+                </div>
               </div>
               <p className="booking-map__address">
-                Вы&nbsp;выбрали: наб. реки Карповки&nbsp;5, лит&nbsp;П, м.
-                Петроградская
+                {bookingQuestInfo[0]?.location.address}
               </p>
             </div>
           </div>
@@ -53,117 +80,11 @@ function Booking(): JSX.Element{
               <legend className="visually-hidden">Выбор даты и времени</legend>
               <fieldset className="booking-form__date-section">
                 <legend className="booking-form__date-title">Сегодня</legend>
-                <div className="booking-form__date-inner-wrapper">
-                  <label className="custom-radio booking-form__date">
-                    <input
-                      type="radio"
-                      id="today9h45m"
-                      name="date"
-                      required
-                      defaultValue="today9h45m"
-                    />
-                    <span className="custom-radio__label">9:45</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input
-                      type="radio"
-                      id="today15h00m"
-                      name="date"
-                      defaultChecked
-                      required
-                      defaultValue="today15h00m"
-                    />
-                    <span className="custom-radio__label">15:00</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input
-                      type="radio"
-                      id="today17h30m"
-                      name="date"
-                      required
-                      defaultValue="today17h30m"
-                    />
-                    <span className="custom-radio__label">17:30</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input
-                      type="radio"
-                      id="today19h30m"
-                      name="date"
-                      required
-                      defaultValue="today19h30m"
-                      disabled
-                    />
-                    <span className="custom-radio__label">19:30</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input
-                      type="radio"
-                      id="today21h30m"
-                      name="date"
-                      required
-                      defaultValue="today21h30m"
-                    />
-                    <span className="custom-radio__label">21:30</span>
-                  </label>
-                </div>
+                {bookingQuestInfo.length && <TodayQuestTime bookingQuestInfo={bookingQuestInfo} />}
               </fieldset>
               <fieldset className="booking-form__date-section">
                 <legend className="booking-form__date-title">Завтра</legend>
-                <div className="booking-form__date-inner-wrapper">
-                  <label className="custom-radio booking-form__date">
-                    <input
-                      type="radio"
-                      id="tomorrow11h00m"
-                      name="date"
-                      required
-                      defaultValue="tomorrow11h00m"
-                    />
-                    <span className="custom-radio__label">11:00</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input
-                      type="radio"
-                      id="tomorrow15h00m"
-                      name="date"
-                      required
-                      defaultValue="tomorrow15h00m"
-                      disabled
-                    />
-                    <span className="custom-radio__label">15:00</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input
-                      type="radio"
-                      id="tomorrow17h30m"
-                      name="date"
-                      required
-                      defaultValue="tomorrow17h30m"
-                      disabled
-                    />
-                    <span className="custom-radio__label">17:30</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input
-                      type="radio"
-                      id="tomorrow19h45m"
-                      name="date"
-                      required
-                      defaultValue="tomorrow19h45m"
-                    />
-                    <span className="custom-radio__label">19:45</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input
-                      type="radio"
-                      id="tomorrow21h30m"
-                      name="date"
-                      required
-                      defaultValue="tomorrow21h30m"
-                    />
-                    <span className="custom-radio__label">21:30</span>
-                  </label>
-                </div>
+                {bookingQuestInfo.length && <TomorrowQuestTime bookingQuestInfo={bookingQuestInfo} />}
               </fieldset>
             </fieldset>
             <fieldset className="booking-form__section">

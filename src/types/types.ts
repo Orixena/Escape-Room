@@ -40,6 +40,32 @@ export type QuestsData = {
 }
 
 export type QuestData = {
-  quest: TDetailedQuest | null;
+  quest: TDetailedQuest;
   fetchingStatusQuest: RequestStatus;
+  bookingInfo: BookingQuest[];
+  isBookingInfoLoaded: boolean;
+  selectedQuestPlaceId: string;
+  selectedQuestPlace: BookingQuest;
 }
+
+export type Location = {
+  address: string;
+  coords: number[];
+}
+
+export type QuestTime = {
+  time: string;
+  isAvailable: boolean;
+}
+
+export type Slots = {
+  today: QuestTime[];
+  tomorrow: QuestTime[];
+}
+
+export type BookingQuest = {
+  id: string;
+  location: Location;
+  slots: Slots;
+}
+
