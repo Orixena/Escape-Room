@@ -69,3 +69,13 @@ export type BookingQuest = {
   slots: Slots;
 }
 
+export type QuestFormData = {
+  date: string;
+  time: string;
+  contactPerson: string;
+  phone: string;
+  withChildren: boolean;
+  peopleCount: number;
+  placeId: string;
+};
+

@@ -7,7 +7,8 @@ import TomorrowQuestTime from '../../components/quest-time/tomorrow-quest-time';
 import Map from '../../components/map/map';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchBookingAction } from '../../store/api-actions';
-import { getQuest, getBookingQuestInfo } from '../../store/quest-data/quest-data.selectors';
+import { getQuest, getBookingQuestInfo, getSelectedQuestPlace } from '../../store/quest-data/quest-data.selectors';
+import { setQuestPlaceId } from '../../store/quest-data/quest-data.slice';
 
 
 function Booking(): JSX.Element{
@@ -18,14 +19,14 @@ function Booking(): JSX.Element{
   const detailedQuest = useAppSelector(getQuest);
 
   useEffect(() => {
-    if (detailedQuest.id) {
-      dispatch(fetchBookingAction(detailedQuest.id));
-    } else if (id) {
+    if (id) {
       dispatch(fetchBookingAction(id));
+      dispatch(setQuestPlaceId(id));
     }
   }, [id, dispatch, detailedQuest.id]);
 
   const bookingQuestInfo = useAppSelector(getBookingQuestInfo);
+  const selectedQuestPlace = useAppSelector(getSelectedQuestPlace);
   console.log(bookingQuestInfo, 'booking');
 
   return (
@@ -63,11 +64,11 @@ function Booking(): JSX.Element{
             <div className="booking-map">
               <div className="map">
                 <div className="map__container">
-
+                  {bookingQuestInfo.length && <Map bookingInfo={bookingQuestInfo}/>}
                 </div>
               </div>
               <p className="booking-map__address">
-                {bookingQuestInfo[0]?.location.address}
+                {selectedQuestPlace?.location.address}
               </p>
             </div>
           </div>
@@ -80,11 +81,11 @@ function Booking(): JSX.Element{
               <legend className="visually-hidden">Выбор даты и времени</legend>
               <fieldset className="booking-form__date-section">
                 <legend className="booking-form__date-title">Сегодня</legend>
-                {bookingQuestInfo.length && <TodayQuestTime bookingQuestInfo={bookingQuestInfo} />}
+                {bookingQuestInfo.length && <TodayQuestTime bookingQuestInfo={selectedQuestPlace} />}
               </fieldset>
               <fieldset className="booking-form__date-section">
                 <legend className="booking-form__date-title">Завтра</legend>
-                {bookingQuestInfo.length && <TomorrowQuestTime bookingQuestInfo={bookingQuestInfo} />}
+                {bookingQuestInfo.length && <TomorrowQuestTime bookingQuestInfo={selectedQuestPlace} />}
               </fieldset>
             </fieldset>
             <fieldset className="booking-form__section">

@@ -1,12 +1,12 @@
 import { BookingQuest } from '../../types/types';
 
 type TomorrowQuestTimeProps = {
-  bookingQuestInfo: BookingQuest[];
+  bookingQuestInfo: BookingQuest;
 }
 
 function TomorrowQuestTime({bookingQuestInfo}: TomorrowQuestTimeProps): JSX.Element {
 
-  const todayHours = bookingQuestInfo[0].slots.tomorrow;
+  const todayHours = bookingQuestInfo.slots.tomorrow;
 
   return (
     <div className="booking-form__date-inner-wrapper">

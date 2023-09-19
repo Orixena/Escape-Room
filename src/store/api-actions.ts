@@ -5,6 +5,7 @@ import { TQuest, TDetailedQuest, AuthData, AuthorizedUser, BookingQuest } from '
 import { redirectToRoute } from './action';
 import { ApiRoute, AppRoute, FetchingNameSpace } from '../const';
 import { dropToken, saveToken } from '../services/token.js';
+import { setSelectedQuestPlace } from './quest-data/quest-data.slice.js';
 
 //import { clearFavorites } from './favorites-data/favorites-data.slice.js';
 
@@ -44,10 +45,11 @@ export const fetchBookingAction = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->(`${FetchingNameSpace.Quest}/booking`, async (id, { extra: api }) => {
+>(`${FetchingNameSpace.Quest}/booking`, async (id, {dispatch, extra: api }) => {
   const { data } = await api.get<BookingQuest[]>(
     `${ApiRoute.GetDetailedQuest}/${id}/booking`
   );
+  dispatch(setSelectedQuestPlace(data[0]));
   console.log(data);
   return data;
 });

@@ -1,12 +1,14 @@
+import { useAppDispatch } from '../../hooks';
 import { BookingQuest } from '../../types/types';
 
 type TodayQuestTimeProps = {
-  bookingQuestInfo: BookingQuest[];
+  bookingQuestInfo: BookingQuest;
 }
 
 function TodayQuestTime({bookingQuestInfo}: TodayQuestTimeProps): JSX.Element {
 
-  const todayHours = bookingQuestInfo[0].slots.today;
+  const dispatch = useAppDispatch();
+  const todayHours = bookingQuestInfo.slots.today;
 
   return (
     <div className="booking-form__date-inner-wrapper">

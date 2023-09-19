@@ -46,18 +46,16 @@ function Map({bookingInfo}: MapProps): JSX.Element {
   const questFirstPointLocation = selectedQuestPlace.location.coords;
   const mapRef = useRef(null);
   const map = useMap(mapRef, questFirstPointLocation);
-  console.log('first', questFirstPointLocation);
 
   function handleBaloonClick(placeId: string) {
     const selectedPlace = bookingInfo.find((place) => place.id === placeId) || bookingInfo[0];
     dispatch(setSelectedQuestPlace(selectedPlace));
     //dispatch(setFormPlaceId(placeId));
   }
-console.log('1');
+
   useEffect(() => {
     if (map && questFirstPointLocation) {
       const markerLayer = layerGroup().addTo(map);
-      console.log('2');
       bookingInfo.forEach((point) => {
         const markerOptions: CustomMarkerOptions = {
           title: point.location.address,

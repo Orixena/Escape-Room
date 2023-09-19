@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchQuestAction, fetchBookingAction } from '../api-actions';
 import { FetchingNameSpace, RequestStatus } from '../../const';
-import { QuestData, TDetailedQuest, BookingQuest } from '../../types/types';
+import { QuestData, TDetailedQuest, BookingQuest, QuestFormData } from '../../types/types';
 
 const initialDetailedQuest: TDetailedQuest = {
   id: '',
