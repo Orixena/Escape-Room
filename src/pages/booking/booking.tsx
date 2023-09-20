@@ -6,7 +6,7 @@ import TodayQuestTime from '../../components/quest-time/today-quest-time';
 import TomorrowQuestTime from '../../components/quest-time/tomorrow-quest-time';
 import Map from '../../components/map/map';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchBookingAction, postFormData } from '../../store/api-actions';
+import { fetchBookingAction, fetchReservedQuests, postFormData } from '../../store/api-actions';
 import { getQuest, getBookingQuestInfo, getSelectedQuestPlace, getQuestFormTime, getQuestFormDate, getFormSendingStatus } from '../../store/quest-data/quest-data.selectors';
 import { setFormPlaceId, setQuestPlaceId, dropFormSendingStatus } from '../../store/quest-data/quest-data.slice';
 import { RequestStatus } from '../../const';
@@ -33,7 +33,7 @@ function Booking(): JSX.Element{
   const [phone, setPhone] = useState('');
   const [peopleCount, setPeopleCount] = useState('');
   const [isWithChildren, setIsWithChildren] = useState(false);
-  const sendingStatus = useAppSelector(getFormSendingStatus);
+  const formSendingStatus = useAppSelector(getFormSendingStatus);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSetPersonName = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -58,13 +58,14 @@ function Booking(): JSX.Element{
     dispatch(
       postFormData({postData: {date: formDate, time: questTime, contactPerson: personName, phone: phone, withChildren: isWithChildren, peopleCount: Number(peopleCount), placeId: selectedQuestPlace.id}, id: postId})
     );
+    dispatch(fetchReservedQuests());
   }
 
   useEffect(() => {
     let isMounted = true;
 
     if (isMounted) {
-      switch (sendingStatus) {
+      switch (formSendingStatus) {
         case RequestStatus.Success:
           setPersonName('');
           setPhone('');
@@ -87,7 +88,7 @@ function Booking(): JSX.Element{
     return () => {
       isMounted = false;
     };
-  }, [sendingStatus, dispatch]);
+  }, [formSendingStatus, dispatch]);
 
   return (
     <div className="wrapper">

@@ -8,7 +8,7 @@ type QuestCardProps = {
 }
 
 function QuestCard({quest}: QuestCardProps): JSX.Element {
-  const {id, title, previewImg, previewImgWebp, level, type, peopleMinMax} = quest;
+  const {id, title, previewImg, previewImgWebp, level,peopleMinMax} = quest;
   const [isHovered, setIsHovered] = useState(false);
 
   return (

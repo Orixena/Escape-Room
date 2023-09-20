@@ -63,6 +63,18 @@ export const postFormData = createAsyncThunk<QuestFormData, { postData: QuestFor
   }
 );
 
+export const deleteReservedQuest = createAsyncThunk<ReservedQuest, ReservedQuest['id'], {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  `${FetchingNameSpace.Reservation}/deleteQuest`,
+  async(id, {extra: api}) => {
+    const {data} = await api.delete<ReservedQuest>(`${ApiRoute.MyQuests}/${id}`);
+    return data;
+  }
+);
+
 export const fetchReservedQuests = createAsyncThunk<ReservedQuest[], undefined, {
   dispatch: AppDispatch;
   state: State;

@@ -1,7 +1,30 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
+import ReservedQuestList from '../../components/quests-list/reserved-quests-list';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { getReservedQuests } from '../../store/quest-data/quest-data.selectors';
+import { useEffect, useState } from 'react';
+import { fetchReservedQuests } from '../../store/api-actions';
+import { ReservedQuest } from '../../types/types';
 
 function MyQuests(): JSX.Element {
+
+  const reservedQuests = useAppSelector(getReservedQuests);
+  const dispatch = useAppDispatch();
+
+  const [selectedPoint, setSelectedPoint] = useState<ReservedQuest | undefined>(
+    undefined
+  );
+
+  const handleListItemHover = (id: string | null) => {
+    const currentPoint = reservedQuests.find((item) => item.quest.id === id);
+    setSelectedPoint(currentPoint);
+  };
+
+  useEffect(() => {
+    dispatch(fetchReservedQuests());
+  },[dispatch]);
+
   return (
     <div className="wrapper">
       <Helmet>
@@ -30,155 +53,7 @@ function MyQuests(): JSX.Element {
               Мои бронирования
             </h1>
           </div>
-          <div className="cards-grid">
-            <div className="quest-card">
-              <div className="quest-card__img">
-                <picture>
-                  <source
-                    type="image/webp"
-                    srcSet="img/content/maniac/maniac-size-s.webp, img/content/maniac/maniac-size-s@2x.webp 2x"
-                  />
-                  <img
-                    src="img/content/maniac/maniac-size-s.jpg"
-                    srcSet="img/content/maniac/maniac-size-s@2x.jpg 2x"
-                    width={344}
-                    height={232}
-                    alt="Мужчина в маске в тёмном переходе."
-                  />
-                </picture>
-              </div>
-              <div className="quest-card__content">
-                <div className="quest-card__info-wrapper">
-                  <a className="quest-card__link" href="quest.html">
-                    Маньяк
-                  </a>
-                  <span className="quest-card__info">
-                    [сегодня,&nbsp;17:00. наб. реки Карповки&nbsp;5, лит&nbsp;П
-                    <br />
-                    м. Петроградская]
-                  </span>
-                </div>
-                <ul className="tags quest-card__tags">
-                  <li className="tags__item">
-                    <svg width={11} height={14} aria-hidden="true">
-                      <use xlinkHref="#icon-person" />
-                    </svg>
-                    6&nbsp;чел
-                  </li>
-                  <li className="tags__item">
-                    <svg width={14} height={14} aria-hidden="true">
-                      <use xlinkHref="#icon-level" />
-                    </svg>
-                    Средний
-                  </li>
-                </ul>
-                <button
-                  className="btn btn--accent btn--secondary quest-card__btn"
-                  type="button"
-                >
-                  Отменить
-                </button>
-              </div>
-            </div>
-            <div className="quest-card">
-              <div className="quest-card__img">
-                <picture>
-                  <source
-                    type="image/webp"
-                    srcSet="img/content/palace/palace-size-s.webp, img/content/palace/palace-size-s@2x.webp 2x"
-                  />
-                  <img
-                    src="img/content/palace/palace-size-s.jpg"
-                    srcSet="img/content/palace/palace-size-s@2x.jpg 2x"
-                    width={344}
-                    height={232}
-                    alt="Замок на возвышенности."
-                  />
-                </picture>
-              </div>
-              <div className="quest-card__content">
-                <div className="quest-card__info-wrapper">
-                  <a className="quest-card__link" href="quest.html">
-                    Тайны старого особняка
-                  </a>
-                  <span className="quest-card__info">
-                    [завтра,&nbsp;17:00. наб. реки Карповки&nbsp;5, лит&nbsp;П
-                    <br />
-                    м. Петроградская]
-                  </span>
-                </div>
-                <ul className="tags quest-card__tags">
-                  <li className="tags__item">
-                    <svg width={11} height={14} aria-hidden="true">
-                      <use xlinkHref="#icon-person" />
-                    </svg>
-                    3&nbsp;чел
-                  </li>
-                  <li className="tags__item">
-                    <svg width={14} height={14} aria-hidden="true">
-                      <use xlinkHref="#icon-level" />
-                    </svg>
-                    Лёгкий
-                  </li>
-                </ul>
-                <button
-                  className="btn btn--accent btn--secondary quest-card__btn"
-                  type="button"
-                >
-                  Отменить
-                </button>
-              </div>
-            </div>
-            <div className="quest-card">
-              <div className="quest-card__img">
-                <picture>
-                  <source
-                    type="image/webp"
-                    srcSet="img/content/maniac/maniac-size-s.webp, img/content/maniac/maniac-size-s@2x.webp 2x"
-                  />
-                  <img
-                    src="img/content/maniac/maniac-size-s.jpg"
-                    srcSet="img/content/maniac/maniac-size-s@2x.jpg 2x"
-                    width={344}
-                    height={232}
-                    alt="Мужчина в маске в тёмном переходе."
-                  />
-                </picture>
-              </div>
-              <div className="quest-card__content">
-                <div className="quest-card__info-wrapper">
-                  <a className="quest-card__link" href="quest.html">
-                    Маньяк
-                  </a>
-                  <span className="quest-card__info">
-                    [завтра,&nbsp;20:00. наб. реки Карповки&nbsp;5, лит&nbsp;П
-                    <br />
-                    м. Петроградская]
-                  </span>
-                </div>
-                <ul className="tags quest-card__tags">
-                  <li className="tags__item">
-                    <svg width={11} height={14} aria-hidden="true">
-                      <use xlinkHref="#icon-person" />
-                    </svg>
-                    6&nbsp;чел
-                  </li>
-                  <li className="tags__item">
-                    <svg width={14} height={14} aria-hidden="true">
-                      <use xlinkHref="#icon-level" />
-                    </svg>
-                    Средний
-                  </li>
-                </ul>
-                <button
-                  className="btn btn--accent btn--secondary quest-card__btn"
-                  type="button"
-                >
-                  Отменить
-                </button>
-              </div>
-            </div>
-          </div>
+          <ReservedQuestList quests={reservedQuests} onListItemHover={handleListItemHover}/>
         </div>
       </main>
       <footer className="footer">

@@ -47,3 +47,8 @@ export const getFormSendingStatus = createSelector(
   (state: State) => state[FetchingNameSpace.Quest],
   (state: QuestData) => state.formSendingStatus
 );
+
+export const getReservedQuests = createSelector(
+  (state: State) => state[FetchingNameSpace.Quest],
+  (state: QuestData) => state.reservedQuests
+);
