@@ -1,14 +1,22 @@
 import { useAppDispatch } from '../../hooks';
+import { setFormDate, setFormTime } from '../../store/quest-data/quest-data.slice';
 import { BookingQuest } from '../../types/types';
 
 type TodayQuestTimeProps = {
   bookingQuestInfo: BookingQuest;
+  isSubmitting: boolean;
 }
 
-function TodayQuestTime({bookingQuestInfo}: TodayQuestTimeProps): JSX.Element {
+function TodayQuestTime({bookingQuestInfo, isSubmitting}: TodayQuestTimeProps): JSX.Element {
 
   const dispatch = useAppDispatch();
   const todayHours = bookingQuestInfo.slots.today;
+
+  const handleSetFormDateTime = (data: string) => {
+    dispatch(setFormTime(data));
+    dispatch(setFormDate('today'));
+  };
+
 
   return (
     <div className="booking-form__date-inner-wrapper">
@@ -20,7 +28,8 @@ function TodayQuestTime({bookingQuestInfo}: TodayQuestTimeProps): JSX.Element {
             name="date"
             required
             defaultValue="today9h45m"
-            disabled={!isAvailable}
+            disabled={!isAvailable || isSubmitting}
+            onChange={() => handleSetFormDateTime(time)}
           />
           <span className="custom-radio__label">{time}</span>
         </label>

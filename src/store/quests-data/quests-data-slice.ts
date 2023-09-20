@@ -33,21 +33,6 @@ export const questsData = createSlice({
       .addCase(fetchQuestsAction.rejected, (state) => {
         state.fetchingStatusQuests = RequestStatus.Error;
       });
-      // .addCase(addFavorite.fulfilled, (state, action) => {
-      //   const updateOffer = action.payload;
-      //   const currentOffer = state.offers.findIndex((offer) => offer.id === updateOffer.id);
-      //   if (currentOffer > -1) {
-      //     state.offers[currentOffer].isFavorite = true;
-      //   }
-      // })
-      // .addCase(deleteFavorite.fulfilled, (state, action) => {
-      //   const updateOffer = action.payload;
-      //   const currentOffer = state.offers.findIndex((offer) => offer.id === updateOffer.id);
-
-      //   if (currentOffer > -1) {
-      //     state.offers[currentOffer].isFavorite = false;
-      //   }
-      // });
   },
 });
 

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchQuestAction, fetchBookingAction } from '../api-actions';
+import { fetchQuestAction, fetchBookingAction, postFormData, fetchReservedQuests } from '../api-actions';
 import { FetchingNameSpace, RequestStatus } from '../../const';
 import { QuestData, TDetailedQuest, BookingQuest, QuestFormData } from '../../types/types';
 
@@ -28,6 +28,17 @@ const initialQuestPlace: BookingQuest = {
   }
 };
 
+const initialFormData: QuestFormData = {
+  date: '',
+  time: '',
+  contactPerson: '',
+  phone: '',
+  withChildren: false,
+  peopleCount: 0,
+  placeId: '',
+};
+
+
 const initialState: QuestData = {
   quest: initialDetailedQuest,
   fetchingStatusQuest: RequestStatus.Unsent,
@@ -35,6 +46,9 @@ const initialState: QuestData = {
   isBookingInfoLoaded: false,
   selectedQuestPlaceId: '',
   selectedQuestPlace: initialQuestPlace,
+  questFormData: initialFormData,
+  formSendingStatus: RequestStatus.Unsent,
+  reservedQuests: [],
 };
 
 export const questData = createSlice({
@@ -47,6 +61,18 @@ export const questData = createSlice({
     setSelectedQuestPlace: (state, action: PayloadAction<BookingQuest>) => {
       state.selectedQuestPlace = action.payload;
     },
+    setFormDate: (state, action: PayloadAction<string>) => {
+      state.questFormData.date = action.payload;
+    },
+    setFormTime: (state, action: PayloadAction<string>) => {
+      state.questFormData.time = action.payload;
+    },
+    setFormPlaceId: (state, action: PayloadAction<string>) => {
+      state.questFormData.placeId = action.payload;
+    },
+    dropFormSendingStatus(state) {
+      state.formSendingStatus = RequestStatus.Unsent;
+    }
   },
   extraReducers(builder) {
     builder
@@ -67,8 +93,20 @@ export const questData = createSlice({
       .addCase(fetchBookingAction.fulfilled, (state, action) => {
         state.bookingInfo = action.payload;
         state.isBookingInfoLoaded = true;
+      })
+      .addCase(postFormData.pending, (state) => {
+        state.formSendingStatus = RequestStatus.Pending;
+      })
+      .addCase(postFormData.fulfilled, (state) => {
+        state.formSendingStatus = RequestStatus.Success;
+      })
+      .addCase(postFormData.rejected, (state) => {
+        state.formSendingStatus = RequestStatus.Error;
+      })
+      .addCase(fetchReservedQuests.fulfilled, (state, action) => {
+        state.reservedQuests = action.payload;
       });
   }
 });
 
-export const { setQuestPlaceId, setSelectedQuestPlace } = questData.actions;
+export const { setQuestPlaceId, setSelectedQuestPlace, setFormDate, setFormTime, setFormPlaceId, dropFormSendingStatus } = questData.actions;

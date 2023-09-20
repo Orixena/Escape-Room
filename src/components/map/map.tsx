@@ -2,11 +2,11 @@ import { Icon, Marker, MarkerOptions, LeafletMouseEvent, layerGroup } from 'leaf
 import 'leaflet/dist/leaflet.css';
 import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/use-map/use-map';
-import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT, ZOOM } from '../../const';
+import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const';
 import { BookingQuest } from '../../types/types';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getSelectedQuestPlace } from '../../store/quest-data/quest-data.selectors';
-import { setSelectedQuestPlace } from '../../store/quest-data/quest-data.slice';
+import { setSelectedQuestPlace,setFormPlaceId } from '../../store/quest-data/quest-data.slice';
 
 type CustomMarkerOptions = {
   title: string;
@@ -41,8 +41,6 @@ function Map({bookingInfo}: MapProps): JSX.Element {
   const dispatch = useAppDispatch();
   const selectedQuestPlace = useAppSelector(getSelectedQuestPlace);
 
-  console.log(selectedQuestPlace, 'selected');
-
   const questFirstPointLocation = selectedQuestPlace.location.coords;
   const mapRef = useRef(null);
   const map = useMap(mapRef, questFirstPointLocation);
@@ -50,7 +48,7 @@ function Map({bookingInfo}: MapProps): JSX.Element {
   function handleBaloonClick(placeId: string) {
     const selectedPlace = bookingInfo.find((place) => place.id === placeId) || bookingInfo[0];
     dispatch(setSelectedQuestPlace(selectedPlace));
-    //dispatch(setFormPlaceId(placeId));
+    dispatch(setFormPlaceId(placeId));
   }
 
   useEffect(() => {

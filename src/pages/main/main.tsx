@@ -37,7 +37,7 @@ function Main(): JSX.Element{
             <form className="filter" action="#" method="get">
               <fieldset className="filter__section">
                 <legend className="visually-hidden">Тематика</legend>
-                <FilterTypeList questActiveType={questActiveType}/>
+                <FilterTypeList />
               </fieldset>
               <fieldset className="filter__section">
                 <legend className="visually-hidden">Сложность</legend>

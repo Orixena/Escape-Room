@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, FormEvent, useState, ChangeEvent } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
@@ -6,10 +6,10 @@ import TodayQuestTime from '../../components/quest-time/today-quest-time';
 import TomorrowQuestTime from '../../components/quest-time/tomorrow-quest-time';
 import Map from '../../components/map/map';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchBookingAction } from '../../store/api-actions';
-import { getQuest, getBookingQuestInfo, getSelectedQuestPlace } from '../../store/quest-data/quest-data.selectors';
-import { setQuestPlaceId } from '../../store/quest-data/quest-data.slice';
-
+import { fetchBookingAction, postFormData } from '../../store/api-actions';
+import { getQuest, getBookingQuestInfo, getSelectedQuestPlace, getQuestFormTime, getQuestFormDate, getFormSendingStatus } from '../../store/quest-data/quest-data.selectors';
+import { setFormPlaceId, setQuestPlaceId, dropFormSendingStatus } from '../../store/quest-data/quest-data.slice';
+import { RequestStatus } from '../../const';
 
 function Booking(): JSX.Element{
 
@@ -22,12 +22,72 @@ function Booking(): JSX.Element{
     if (id) {
       dispatch(fetchBookingAction(id));
       dispatch(setQuestPlaceId(id));
+      dispatch(setFormPlaceId(id));
     }
   }, [id, dispatch, detailedQuest.id]);
 
   const bookingQuestInfo = useAppSelector(getBookingQuestInfo);
   const selectedQuestPlace = useAppSelector(getSelectedQuestPlace);
-  console.log(bookingQuestInfo, 'booking');
+
+  const [personName, setPersonName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [peopleCount, setPeopleCount] = useState('');
+  const [isWithChildren, setIsWithChildren] = useState(false);
+  const sendingStatus = useAppSelector(getFormSendingStatus);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSetPersonName = (evt: ChangeEvent<HTMLInputElement>) => {
+    setPersonName(evt.target.value);
+  };
+
+  const handleSetPhone = (evt: ChangeEvent<HTMLInputElement>) => {
+    setPhone(evt.target.value);
+  };
+
+  const handleSetPeopleCount = (evt: ChangeEvent<HTMLInputElement>) => {
+    setPeopleCount(evt.target.value);
+  };
+
+  const formDate = useAppSelector(getQuestFormDate);
+  const questTime = useAppSelector(getQuestFormTime);
+  const postId = detailedQuest.id;
+
+
+  function handleFormSubmit(evt: FormEvent<HTMLFormElement>){
+    evt.preventDefault();
+    dispatch(
+      postFormData({postData: {date: formDate, time: questTime, contactPerson: personName, phone: phone, withChildren: isWithChildren, peopleCount: Number(peopleCount), placeId: selectedQuestPlace.id}, id: postId})
+    );
+  }
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      switch (sendingStatus) {
+        case RequestStatus.Success:
+          setPersonName('');
+          setPhone('');
+          setPeopleCount('');
+          setIsWithChildren(false);
+          dispatch(dropFormSendingStatus());
+          setIsSubmitting(false);
+          break;
+        case RequestStatus.Pending:
+          setIsSubmitting(true);
+          break;
+        case RequestStatus.Error:
+          setIsSubmitting(false);
+          break;
+        default:
+          setIsSubmitting(false);
+      }
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [sendingStatus, dispatch]);
 
   return (
     <div className="wrapper">
@@ -76,16 +136,17 @@ function Booking(): JSX.Element{
             className="booking-form"
             action="https://echo.htmlacademy.ru/"
             method="post"
+            onSubmit={handleFormSubmit}
           >
             <fieldset className="booking-form__section">
               <legend className="visually-hidden">Выбор даты и времени</legend>
               <fieldset className="booking-form__date-section">
                 <legend className="booking-form__date-title">Сегодня</legend>
-                {bookingQuestInfo.length && <TodayQuestTime bookingQuestInfo={selectedQuestPlace} />}
+                {bookingQuestInfo.length && <TodayQuestTime bookingQuestInfo={selectedQuestPlace} isSubmitting={isSubmitting}/>}
               </fieldset>
               <fieldset className="booking-form__date-section">
                 <legend className="booking-form__date-title">Завтра</legend>
-                {bookingQuestInfo.length && <TomorrowQuestTime bookingQuestInfo={selectedQuestPlace} />}
+                {bookingQuestInfo.length && <TomorrowQuestTime bookingQuestInfo={selectedQuestPlace} isSubmitting={isSubmitting} />}
               </fieldset>
             </fieldset>
             <fieldset className="booking-form__section">
@@ -101,6 +162,8 @@ function Booking(): JSX.Element{
                   placeholder="Имя"
                   required
                   pattern="[А-Яа-яЁёA-Za-z'- ]{1,}"
+                  disabled={isSubmitting}
+                  onChange={handleSetPersonName}
                 />
               </div>
               <div className="custom-input booking-form__input">
@@ -114,6 +177,8 @@ function Booking(): JSX.Element{
                   placeholder="Телефон"
                   required
                   pattern="[0-9]{10,}"
+                  disabled={isSubmitting}
+                  onChange={handleSetPhone}
                 />
               </div>
               <div className="custom-input booking-form__input">
@@ -125,6 +190,8 @@ function Booking(): JSX.Element{
                   id="person"
                   name="person"
                   placeholder="Количество участников"
+                  disabled={isSubmitting}
+                  onChange={handleSetPeopleCount}
                   required
                 />
               </div>
@@ -133,7 +200,9 @@ function Booking(): JSX.Element{
                   type="checkbox"
                   id="children"
                   name="children"
-                  defaultChecked
+                  onChange={() => !isWithChildren}
+                  checked={isWithChildren}
+                  disabled={isSubmitting}
                 />
                 <span className="custom-checkbox__icon">
                   <svg width={20} height={17} aria-hidden="true">
@@ -157,6 +226,7 @@ function Booking(): JSX.Element{
                 id="id-order-agreement"
                 name="user-agreement"
                 required
+                disabled={isSubmitting}
               />
               <span className="custom-checkbox__icon">
                 <svg width={20} height={17} aria-hidden="true">

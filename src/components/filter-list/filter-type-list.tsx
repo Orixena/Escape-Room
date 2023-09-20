@@ -2,15 +2,9 @@ import { questTypesNames } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { changeQuestType } from '../../store/quests-data/quests-data-slice';
 
-type FilterTypeListProps ={
-  questActiveType: string;
-}
-
-function FilterTypeList({questActiveType}: FilterTypeListProps): JSX.Element {
+function FilterTypeList(): JSX.Element {
 
   const dispatch = useAppDispatch();
-  console.log('questType: ',questActiveType);
-
 
   return (
     <ul className="filter__list">

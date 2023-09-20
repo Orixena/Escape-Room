@@ -46,6 +46,9 @@ export type QuestData = {
   isBookingInfoLoaded: boolean;
   selectedQuestPlaceId: string;
   selectedQuestPlace: BookingQuest;
+  questFormData: QuestFormData;
+  formSendingStatus: RequestStatus;
+  reservedQuests: ReservedQuest[];
 }
 
 export type Location = {
@@ -78,4 +81,16 @@ export type QuestFormData = {
   peopleCount: number;
   placeId: string;
 };
+
+export type ReservedQuest = {
+  date: string;
+  time: string;
+  contactPerson: string;
+  phone: string;
+  withChildren: boolean;
+  peopleCount: number;
+  id: string;
+  location: Location;
+  quest: TQuest;
+}
 

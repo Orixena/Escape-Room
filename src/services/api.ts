@@ -1,8 +1,5 @@
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError} from 'axios';
-import {StatusCodes} from 'http-status-codes';
+import axios, {AxiosInstance, AxiosRequestConfig, AxiosError} from 'axios';
 import {getToken} from './token';
-//import { toast } from 'react-toastify';
-
 
 const BACKEND_URL = 'https://grading.design.pages.academy/v1/escape-room';
 const REQUEST_TIMEOUT = 5000;
@@ -11,14 +8,6 @@ type DetailMessageType = {
   type: string;
   message: string;
 }
-
-const StatusCodeMap: Record<number, boolean> = {
-  [StatusCodes.BAD_REQUEST]: true,
-  [StatusCodes.UNAUTHORIZED]: true,
-  [StatusCodes.NOT_FOUND]: true
-};
-
-const shouldDisplayError = (response: AxiosResponse) => StatusCodeMap[response.status];
 
 export const createAPI = (): AxiosInstance => {
   const api = axios.create({
@@ -40,12 +29,6 @@ export const createAPI = (): AxiosInstance => {
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError<DetailMessageType>) => {
-      if (error.response && shouldDisplayError(error.response)) {
-        //const detailMessage = (error.response.data);
-
-        //toast.warn(detailMessage.message, {delay: 1000});
-      }
-
       throw error;
     }
   );
